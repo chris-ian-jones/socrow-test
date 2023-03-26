@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { IEvent } from 'src/app/interfaces/iEvent';
 import { IGame } from 'src/app/interfaces/iGame';
 
@@ -7,14 +7,9 @@ import { IGame } from 'src/app/interfaces/iGame';
   templateUrl: './live-updates.component.html',
   styleUrls: ['./live-updates.component.scss']
 })
-export class LiveUpdatesComponent implements OnInit {
+export class LiveUpdatesComponent {
 
   public events: Array<IEvent> = [];
   public games: Array<IGame> = [];
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
 }

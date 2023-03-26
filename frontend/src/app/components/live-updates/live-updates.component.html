@@ -13,7 +13,7 @@
           </ng-container>
           <ng-container *ngSwitchCase="'gameEnd'">
             <img class="event-icon" src="./../../../assets/time-end-dark.svg" alt="">
-            <p>Game {{event.gameState.homeTeam}} vs. {{event.gameState.awayTeam}} ended at {{event.gameState.startTime | timeDiff: event.gameState.endTime}}</p>
+            <p>Game {{event.gameState.homeTeam}} vs. {{event.gameState.awayTeam}} ended {{event.gameState.homeTeamScore}} - {{event.gameState.awayTeamScore}} at {{event.gameState.startTime | timeDiff: event.gameState.endTime}}</p>
           </ng-container>
           <ng-container *ngSwitchDefault>
             <img class="event-icon" src="./../../../assets/football-dark.svg" alt="">

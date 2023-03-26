@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, 
+  OnDestroy, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AppService } from "./app.service";
 import { IGame } from './interfaces/iGame';
@@ -12,9 +13,8 @@ import { LiveGamesComponent } from './components/live-games/live-games.component
   styleUrls: ['./app.component.scss']
 })
 
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   public title: string = 'frontend';
-  public helloMessage: string = '';
   public tabs = [
     {
       label: 'Live Updates',
@@ -27,70 +27,8 @@ export class AppComponent implements OnInit{
   ];
   public activeTabIndex: number = 0;
   public games: Array<IGame> = [];
-  // public games: Array<IGame> = [
-  //   {
-  //     awayTeam: "CHE",
-  //     awayTeamScore: 0,
-  //     endNotified: false,
-  //     endTime: "2023-03-26T12:59:49.990Z",
-  //     homeTeam: "VAM",
-  //     homeTeamScore: 0,
-  //     id: "04d19724-3d0e-4699-a28e-8dab87110fa1",
-  //     startTime: "2023-03-26T11:29:49.990Z"
-  //   },
-  //   {
-  //     awayTeam: "DMA",
-  //     awayTeamScore: 0,
-  //     endNotified: true,
-  //     endTime: "2023-03-26T13:02:24.955Z",
-  //     homeTeam: "MKK",
-  //     homeTeamScore: 0,
-  //     id: "2b9266e8-c6e5-49d7-9b54-6c9ed0832e1e",
-  //     startTime: "2023-03-26T11:32:24.955Z"
-  //   },
-  //   {
-  //     awayTeam: "BBS",
-  //     awayTeamScore: 2,
-  //     endNotified: false,
-  //     endTime: "2023-03-26T17:52:18.502Z",
-  //     homeTeam: "JYO",
-  //     homeTeamScore: 6,
-  //     id: "6f662ea6-38b6-4dbd-a34d-0b38e9b1f30d",
-  //     startTime: "2023-03-26T16:22:18.502Z"
-  //   }
-  // ]
+  public events: Array<IEvent> = [];
 
-  public events: Array<IEvent> = []; //messages received from websockets
-  // public events: Array<IEvent> = [
-  //   {
-  //     gameState: {
-  //       awayTeam: 'QCA',
-  //       awayTeamScore: 2,
-  //       endNotified: false,
-  //       endTime: "2023-03-26T15:52:24.813Z",
-  //       homeTeam: "EZE",
-  //       homeTeamScore: 3,
-  //       id: "c1e94722-2df8-4816-82ea-7a97a2ca2bfb",
-  //       startTime: "2023-03-26T14:22:24.813Z"
-  //     },
-  //     timestamp: "2023-03-26T12:45:49.820Z",
-  //     type: "score"
-  //   },
-  //   {
-  //     gameState: {
-  //       awayTeam: 'QCA',
-  //       awayTeamScore: 2,
-  //       endNotified: false,
-  //       endTime: "2023-03-26T15:52:24.813Z",
-  //       homeTeam: "EZE",
-  //       homeTeamScore: 3,
-  //       id: "c1e94722-2df8-4816-82ea-7a97a2ca2bfb",
-  //       startTime: "2023-03-26T14:22:24.813Z"
-  //     },
-  //     timestamp: "2023-03-26T12:45:49.820Z",
-  //     type: "score"
-  //   }
-  // ];
   private liveScoreSubscription!: Subscription;
 
   @ViewChild('viewContainer', { read: ViewContainerRef }) viewContainerRef!: ViewContainerRef;
@@ -102,10 +40,6 @@ export class AppComponent implements OnInit{
   ) { }
 
   ngOnInit() {
-    this.appService.getHelloMessage().subscribe((payload) => {
-      this.helloMessage = payload.message;
-    });
-
     this.liveScoreSubscription = this.appService
       .subscribeToLiveScoreData('scoreRoom')
       .subscribe(data => {
@@ -114,17 +48,21 @@ export class AppComponent implements OnInit{
         } else if (typeof data === 'object' && data !== null) {
           this.handleEventData(data as IEvent);
         }
-        console.log('*')
-        console.log('this.games: ', this.games)
-        console.log('this.events: ', this.events)
-        console.log('*')
       });
-    console.log()
   }
 
   ngAfterViewInit() {
     this.changeTab(this.activeTabIndex);
     this.cdr.detectChanges();
+  }
+
+  ngOnDestroy() {
+    if (this.liveScoreSubscription) {
+      this.liveScoreSubscription.unsubscribe();
+    }
+    if (this.appService.socket) {
+      this.appService.socket.disconnect();
+    }
   }
 
   private handleGameData(data: IGame[]) {
@@ -133,6 +71,26 @@ export class AppComponent implements OnInit{
   
   private handleEventData(data: IEvent) {
     this.events.push(data);
+
+    const game = this.games.find(game => game.id === data.gameState.id);
+    if (!game) {
+      return;
+    }
+
+    switch (data.type) {
+      case 'score':
+        game.awayTeamScore = data.gameState.awayTeamScore;
+        game.homeTeamScore = data.gameState.homeTeamScore;
+        break;
+      
+      case 'gameEnd':
+        game.endTime = data.gameState.endTime;
+        game.endNotified = data.gameState.endNotified;
+        break;
+
+      default:
+        break;
+    }
   }
 
   changeTab(tabIndex: number) {

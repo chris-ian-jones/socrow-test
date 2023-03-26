@@ -1,30 +1,17 @@
-import { Injectable } from '@angular/core';
-import { Observable, Subject } from "rxjs";
-import { HttpClient } from "@angular/common/http";
-import { IHelloMessage } from "./interfaces/iHelloMessage";
-import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
-import { io } from 'socket.io-client';
-
+import { Injectable, OnDestroy } from '@angular/core';
+import { Observable } from "rxjs";
+import { io, Socket } from 'socket.io-client';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AppService {
-  private apiUrl: string = 'http://localhost:3007/';
+export class AppService implements OnDestroy {
   private wsUrl: string = 'ws://localhost:3008';
-  // private subject: AnonymousSubject<MessageEvent>;
-  // public messages: Subject<ISocketMessage>;
-  private socket: any;
+  public socket: Socket;
   public currentDate = new Date();
 
-  constructor(
-    private httpClient: HttpClient
-  ) {
+  constructor() {
     this.socket = io(this.wsUrl, {'transports': ['websocket']});
-  }
-
-  public getHelloMessage(): Observable<IHelloMessage> {
-    return <Observable<IHelloMessage>> this.httpClient.get(this.apiUrl)
   }
 
   public subscribeToLiveScoreData(eventName: string) {
@@ -33,5 +20,9 @@ export class AppService {
         subscriber.next(data)
       })
     });
+  }
+
+  ngOnDestroy() {
+    this.socket.disconnect();
   }
 }

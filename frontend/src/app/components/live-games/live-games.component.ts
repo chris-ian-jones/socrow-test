@@ -43,19 +43,19 @@ export class LiveGamesComponent implements OnInit {
       ended: IGame[] = [],
       aboutToStart: IGame[] = [];
     
-      games.forEach(game => {
-        switch(this.getGameState(game)) {
-          case 'ended':  // if (x === 'value1')
-            ended.push(game);
-            break;
-          case 'about-to-start':  // if (x === 'value2')
-            aboutToStart.push(game);
-            break;
-          default:
-            inGame.push(game);
-            break;
-        }
-      });
+    games.forEach(game => {
+      switch(this.getGameState(game)) {
+        case 'ended':  // if (x === 'value1')
+          ended.push(game);
+          break;
+        case 'about-to-start':  // if (x === 'value2')
+          aboutToStart.push(game);
+          break;
+        default:
+          inGame.push(game);
+          break;
+      }
+    });
 
     inGame.sort((a, b) => {
       return this.getGameMinute(b.startTime) - this.getGameMinute(a.startTime);
