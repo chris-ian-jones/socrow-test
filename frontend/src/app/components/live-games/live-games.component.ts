@@ -11,10 +11,16 @@ export class LiveGamesComponent implements OnInit {
 
   public events: Array<IEvent> = [];
   public games: Array<IGame> = [];
+  public currentDate!: Date;
 
-  constructor() { }
+  constructor() {
+    this.currentDate = new Date();
+  }
 
   ngOnInit() {
+    setInterval(() => {
+      this.currentDate = new Date();
+    }, 60 * 1000);
   }
 
   public getGameState(game: IGame): string {

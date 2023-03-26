@@ -15,8 +15,7 @@ export class AppService {
   // private subject: AnonymousSubject<MessageEvent>;
   // public messages: Subject<ISocketMessage>;
   private socket: any;
-
-
+  public currentDate = new Date();
 
   constructor(
     private httpClient: HttpClient

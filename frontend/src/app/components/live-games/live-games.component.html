@@ -35,9 +35,12 @@
           </div>
         </div>
         <div class="bottom-lower">
-          <span class="time-container" [class]="getGameState(game)">98'</span>
+          <ng-container [ngSwitch]="getGameState(game)">
+            <span *ngSwitchCase="'in-game'" class="time-container" [class]="getGameState(game)">{{game.startTime | timeDiff: currentDate.toString()}}</span>
+            <span *ngSwitchCase="'ended'" class="time-container" [class]="getGameState(game)">{{game.startTime | timeDiff: game.endTime}}</span>
+            <span *ngSwitchDefault class="time-container" [class]="getGameState(game)">00</span>
+          </ng-container>
         </div>
-        <!-- {{game.awayTeam}} -->
       </div>
     </div>
   </ng-container>

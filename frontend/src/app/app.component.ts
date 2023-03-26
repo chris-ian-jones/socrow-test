@@ -119,7 +119,6 @@ export class AppComponent implements OnInit{
         console.log('this.events: ', this.events)
         console.log('*')
       });
-
     console.log()
   }
 

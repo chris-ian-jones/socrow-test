@@ -6,12 +6,12 @@
         <ng-container [ngSwitch]="event.type">
           <p *ngSwitchCase="'gameStart'">Game {{event.gameState.homeTeam}} vs. {{event.gameState.awayTeam}} started</p>
           <p *ngSwitchCase="'extraTime'">Game {{event.gameState.homeTeam}} vs. {{event.gameState.awayTeam}} has gone into extra time</p>
-          <p *ngSwitchCase="'gameEnd'">Game {{event.gameState.homeTeam}} vs. {{event.gameState.awayTeam}} ended at TODO</p>
-          <p *ngSwitchDefault>Goal in {{event.gameState.homeTeam}} vs. {{event.gameState.awayTeam}} at {{event.gameMinute}}' : new score: {{event.gameState.homeTeam}} {{event.gameState.homeTeamScore}} - {{event.gameState.awayTeamScore}} {{event.gameState.awayTeam}}</p>
+          <p *ngSwitchCase="'gameEnd'">Game {{event.gameState.homeTeam}} vs. {{event.gameState.awayTeam}} ended at {{event.gameState.startTime | timeDiff: event.gameState.endTime}}</p>
+          <p *ngSwitchDefault>Goal in {{event.gameState.homeTeam}} vs. {{event.gameState.awayTeam}} at {{event.gameState.startTime | timeDiff: event.timestamp}}' : new score: {{event.gameState.homeTeam}} {{event.gameState.homeTeamScore}} - {{event.gameState.awayTeamScore}} {{event.gameState.awayTeam}}</p>
         </ng-container>
       </div>
       <div class="right-container">
-        <p class="event-date">{{event.timestamp | date:'MM/dd/yyyy HH:mm'}}</p>
+        <p class="event-date">{{event.timestamp | date:'dd/MM/yyyy HH:mm'}}</p>
       </div>
     </div>
   </ng-container>
