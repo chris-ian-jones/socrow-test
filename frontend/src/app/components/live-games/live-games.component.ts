@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LiveGamesComponent implements OnInit {
 
+  public events = [];
+
   constructor() { }
 
   ngOnInit() {

@@ -1,3 +1,11 @@
 <p>
   live-updates works!
 </p>
+<div *ngFor="let event of events" style="border: 1px solid red;">
+  <p>
+    type: {{event.type}}
+  </p>
+  <p>
+    timestamp: {{event.timestamp}}
+  </p>
+</div>
