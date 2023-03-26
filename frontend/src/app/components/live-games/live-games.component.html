@@ -2,13 +2,25 @@
   <ng-container *ngFor="let game of sortGames(games)">
     <div class="game-card" [class]="getGameState(game)">
       <div class="top-row">
-        <div>
-          <img class="game-icon" src="https://placehold.co/30" alt="">
-        </div>
         <ng-container [ngSwitch]="getGameState(game)">
-          <p *ngSwitchCase="'in-game'" class="game-status">In game</p>
-          <p *ngSwitchCase="'ended'" class="game-status">Ended: {{game.endTime | date:'dd/MM/yyyy HH:mm'}}</p>
-          <p *ngSwitchDefault class="game-status">About to start: {{game.startTime | date:'dd/MM/yyyy HH:mm'}}</p>
+          <ng-container *ngSwitchCase="'in-game'">
+            <div>
+              <img class="game-icon" src="./../../../assets/football-light.svg" alt="football">
+            </div>
+            <p class="game-status">In game</p>
+          </ng-container>
+          <ng-container *ngSwitchCase="'ended'">
+            <div>
+              <img class="game-icon" src="./../../../assets/time-stop-light.svg" alt="">
+            </div>
+            <p class="game-status">Ended</p>
+          </ng-container>
+          <ng-container *ngSwitchDefault>
+            <div>
+              <img class="game-icon" src="./../../../assets/time-start-light.svg" alt="">
+            </div>
+            <p class="game-status">About to start</p>
+          </ng-container>
         </ng-container>
       </div>
       <div class="middle-row">

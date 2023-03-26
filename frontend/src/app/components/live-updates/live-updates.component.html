@@ -2,12 +2,23 @@
   <ng-container *ngFor="let event of events">
     <div class="event-card">
       <div class="left-container">
-        <img class="event-icon" src="https://placehold.co/30" alt="">
         <ng-container [ngSwitch]="event.type">
-          <p *ngSwitchCase="'gameStart'">Game {{event.gameState.homeTeam}} vs. {{event.gameState.awayTeam}} started</p>
-          <p *ngSwitchCase="'extraTime'">Game {{event.gameState.homeTeam}} vs. {{event.gameState.awayTeam}} has gone into extra time</p>
-          <p *ngSwitchCase="'gameEnd'">Game {{event.gameState.homeTeam}} vs. {{event.gameState.awayTeam}} ended at {{event.gameState.startTime | timeDiff: event.gameState.endTime}}</p>
-          <p *ngSwitchDefault>Goal in {{event.gameState.homeTeam}} vs. {{event.gameState.awayTeam}} at {{event.gameState.startTime | timeDiff: event.timestamp}}' : new score: {{event.gameState.homeTeam}} {{event.gameState.homeTeamScore}} - {{event.gameState.awayTeamScore}} {{event.gameState.awayTeam}}</p>
+          <ng-container *ngSwitchCase="'gameStart'">
+            <img class="event-icon" src="./../../../assets/time-start-dark.svg" alt="">
+            <p>Game {{event.gameState.homeTeam}} vs. {{event.gameState.awayTeam}} started</p>
+          </ng-container>
+          <ng-container *ngSwitchCase="'extraTime'">
+            <img class="event-icon" src="./../../../assets/time-start-dark.svg" alt="">
+            <p>Game {{event.gameState.homeTeam}} vs. {{event.gameState.awayTeam}} has gone into extra time</p>
+          </ng-container>
+          <ng-container *ngSwitchCase="'gameEnd'">
+            <img class="event-icon" src="./../../../assets/time-end-dark.svg" alt="">
+            <p>Game {{event.gameState.homeTeam}} vs. {{event.gameState.awayTeam}} ended at {{event.gameState.startTime | timeDiff: event.gameState.endTime}}</p>
+          </ng-container>
+          <ng-container *ngSwitchDefault>
+            <img class="event-icon" src="./../../../assets/football-dark.svg" alt="">
+            <p>Goal in {{event.gameState.homeTeam}} vs. {{event.gameState.awayTeam}} at {{event.gameState.startTime | timeDiff: event.timestamp}}' : new score: {{event.gameState.homeTeam}} {{event.gameState.homeTeamScore}} - {{event.gameState.awayTeamScore}} {{event.gameState.awayTeam}}</p>
+          </ng-container>
         </ng-container>
       </div>
       <div class="right-container">
