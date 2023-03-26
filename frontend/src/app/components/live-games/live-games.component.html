@@ -1,5 +1,5 @@
 <div class="tab-container live-games-container">
-  <ng-container *ngFor="let game of games">
+  <ng-container *ngFor="let game of sortGames(games)">
     <div class="game-card" [class]="getGameState(game)">
       <div class="top-row">
         <div>
@@ -7,8 +7,8 @@
         </div>
         <ng-container [ngSwitch]="getGameState(game)">
           <p *ngSwitchCase="'in-game'" class="game-status">In game</p>
-          <p *ngSwitchCase="'ended'" class="game-status">Ended</p>
-          <p *ngSwitchDefault class="game-status">About to start</p>
+          <p *ngSwitchCase="'ended'" class="game-status">Ended: {{game.endTime | date:'dd/MM/yyyy HH:mm'}}</p>
+          <p *ngSwitchDefault class="game-status">About to start: {{game.startTime | date:'dd/MM/yyyy HH:mm'}}</p>
         </ng-container>
       </div>
       <div class="middle-row">
