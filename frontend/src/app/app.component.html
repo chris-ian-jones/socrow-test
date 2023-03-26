@@ -1,4 +1,4 @@
 <span>{{helloMessage}}</span> <br/>
-<li *ngFor="let item of receivedMessages">Source: {{item.source}} -> Content {{item.content}}</li>
+<li *ngFor="let event of events">Type: {{event.type}} / Timestamp: {{event.timestamp}}</li>
 
 <router-outlet></router-outlet>
