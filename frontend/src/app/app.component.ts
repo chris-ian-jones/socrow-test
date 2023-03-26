@@ -10,7 +10,7 @@ import { ISocketMessage } from "./interfaces/iSocketMessage";
 
 export class AppComponent implements OnInit{
   public title: string = 'frontend';
-  public helloMessage: string = ''
+  public helloMessage: string = '';
   public receivedMessages: Array<ISocketMessage> = []; //messages received from websockets
 
   constructor(
