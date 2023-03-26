@@ -3,7 +3,7 @@ export class Game {
     public awayTeamScore: number;
     public homeTeamScore: number;
     public endTime: Date
-    private endNotified: boolean = false;
+    public endNotified: boolean = false;
 
     constructor(
         public id: string,
@@ -11,8 +11,13 @@ export class Game {
         public awayTeam: string,
         public startTime: Date
     ) {
-        this.homeTeamScore = 0;
-        this.awayTeamScore = 0;
+        if (new Date() > startTime) {
+          this.homeTeamScore = Math.floor(Math.random() * 3);
+          this.awayTeamScore = Math.floor(Math.random() * 3);
+        } else {
+          this.homeTeamScore = 0;
+          this.awayTeamScore = 0;
+        }
         this.endTime = this.addGameTime(90)
     }
 

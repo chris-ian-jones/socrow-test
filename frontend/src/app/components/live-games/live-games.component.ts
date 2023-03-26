@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { IEvent } from 'src/app/interfaces/iEvent';
 import { IGame } from 'src/app/interfaces/iGame';
 
@@ -13,7 +13,7 @@ export class LiveGamesComponent implements OnInit {
   public games: Array<IGame> = [];
   public currentDate!: Date;
 
-  constructor() {
+  constructor(public cdr: ChangeDetectorRef) {
     this.currentDate = new Date();
   }
 

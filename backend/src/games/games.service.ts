@@ -37,7 +37,12 @@ export class GamesService {
 
   constructor() {
     for (let gameId of this.gameIds) {
-      this.games.push(new Game(gameId, Game.getRandomTeamAbbr(), Game.getRandomTeamAbbr(), Game.getRandomStartTime()));
+      this.games.push(new Game(
+        gameId, 
+        Game.getRandomTeamAbbr(), 
+        Game.getRandomTeamAbbr(), 
+        Game.getRandomStartTime()
+      ));
     }
   }
 
@@ -54,7 +59,7 @@ export class GamesService {
    * @private
    */
   private getRandomUpdateType(): string {
-    const  eventTypes = ['penalty', 'extraTime', 'score'];
+    const  eventTypes = ['gameEnd', 'extraTime', 'score'];
     return eventTypes[Math.floor(Math.random() * eventTypes.length)];
   }
 
@@ -62,14 +67,25 @@ export class GamesService {
     const shouldUpdate = Math.random() < 0.01;
     if (shouldUpdate) {
       switch(this.getRandomUpdateType()) {
-        case 'penalty':
+        case 'gameEnd':
+          if (new Date() > game.addGameTime(90)) {
+            game.setEndNotified(true);
+            game.endTime = new Date();
+            return <IGameUpdate>{type: 'gameEnd', timestamp: new Date(), gameState: game};
+          }
           break;
         case 'extraTime':
-          break;
+          if (new Date() > game.addGameTime(90)) {
+            const extraTime = Math.floor(Math.random() * 30);
+            game.setEndNotified(false);
+            game.endTime = game.addGameTime(90 + extraTime);
+            return <IGameUpdate>{type: 'extraTime', timestamp: new Date(), gameState: game};
+          }
         case 'score':
-          game.markGoal( Math.random() < 0.5);
-          return <IGameUpdate>{type: 'score', timestamp: new Date(), gameState: game};
-          break;
+          if ((new Date() > game.addGameTime(90)) && !game.endNotified) {
+            game.markGoal( Math.random() < 0.5);
+            return <IGameUpdate>{type: 'score', timestamp: new Date(), gameState: game};
+          }
         default:
       }
     }

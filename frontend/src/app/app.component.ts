@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, 
+import { AfterViewInit, ChangeDetectorRef, Component, ComponentRef, ComponentFactoryResolver, 
   OnDestroy, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AppService } from "./app.service";
@@ -30,6 +30,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   public events: Array<IEvent> = [];
 
   private liveScoreSubscription!: Subscription;
+  public componentRef!: ComponentRef<any>;
 
   @ViewChild('viewContainer', { read: ViewContainerRef }) viewContainerRef!: ViewContainerRef;
 
@@ -91,6 +92,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       default:
         break;
     }
+    if (this.activeTabIndex === 1) {
+      this.componentRef.changeDetectorRef.detectChanges();
+    }
   }
 
   changeTab(tabIndex: number) {
@@ -102,9 +106,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     this.events.length = 0;
     this.viewContainerRef.clear();
     const componentFactory = this.cfr.resolveComponentFactory(this.tabs[tabIndex].component);
-    const componentRef = this.viewContainerRef.createComponent(componentFactory);
-    componentRef.instance.events = this.events;
-    componentRef.instance.games = this.games;
+    this.componentRef = this.viewContainerRef.createComponent(componentFactory);
+    this.componentRef.instance.events = this.events;
+    this.componentRef.instance.games = this.games;
   }
 
 }
