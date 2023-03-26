@@ -1,4 +1,13 @@
-<span>{{helloMessage}}</span> <br/>
-<li *ngFor="let event of events">Type: {{event.type}} / Timestamp: {{event.timestamp}}</li>
-
-<router-outlet></router-outlet>
+<div class="wrapper">
+  <div class="container">
+    <ul class="nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/live-updates" routerLinkActive="active">Live Updates</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/live-games" routerLinkActive="active">Live Games</a>
+      </li>
+    </ul>
+    <router-outlet></router-outlet>
+  </div>
+</div>
