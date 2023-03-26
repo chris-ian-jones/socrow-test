@@ -27,6 +27,39 @@ export class AppComponent implements OnInit{
   ];
   public activeTabIndex: number = 0;
   public games: Array<IGame> = [];
+  // public games: Array<IGame> = [
+  //   {
+  //     awayTeam: "CHE",
+  //     awayTeamScore: 0,
+  //     endNotified: false,
+  //     endTime: "2023-03-26T12:59:49.990Z",
+  //     homeTeam: "VAM",
+  //     homeTeamScore: 0,
+  //     id: "04d19724-3d0e-4699-a28e-8dab87110fa1",
+  //     startTime: "2023-03-26T11:29:49.990Z"
+  //   },
+  //   {
+  //     awayTeam: "DMA",
+  //     awayTeamScore: 0,
+  //     endNotified: true,
+  //     endTime: "2023-03-26T13:02:24.955Z",
+  //     homeTeam: "MKK",
+  //     homeTeamScore: 0,
+  //     id: "2b9266e8-c6e5-49d7-9b54-6c9ed0832e1e",
+  //     startTime: "2023-03-26T11:32:24.955Z"
+  //   },
+  //   {
+  //     awayTeam: "BBS",
+  //     awayTeamScore: 2,
+  //     endNotified: false,
+  //     endTime: "2023-03-26T17:52:18.502Z",
+  //     homeTeam: "JYO",
+  //     homeTeamScore: 6,
+  //     id: "6f662ea6-38b6-4dbd-a34d-0b38e9b1f30d",
+  //     startTime: "2023-03-26T16:22:18.502Z"
+  //   }
+  // ]
+
   public events: Array<IEvent> = []; //messages received from websockets
   // public events: Array<IEvent> = [
   //   {
@@ -114,6 +147,7 @@ export class AppComponent implements OnInit{
     const componentFactory = this.cfr.resolveComponentFactory(this.tabs[tabIndex].component);
     const componentRef = this.viewContainerRef.createComponent(componentFactory);
     componentRef.instance.events = this.events;
+    componentRef.instance.games = this.games;
   }
 
 }

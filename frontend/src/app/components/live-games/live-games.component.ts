@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { IEvent } from 'src/app/interfaces/iEvent';
+import { IGame } from 'src/app/interfaces/iGame';
 
 @Component({
   selector: 'app-live-games',
@@ -7,11 +9,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LiveGamesComponent implements OnInit {
 
-  public events = [];
+  public events: Array<IEvent> = [];
+  public games: Array<IGame> = [];
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  public getGameState(game: IGame): string {
+    const now = new Date(),
+      start = new Date(game.startTime);
+  
+    if (game.endNotified) {
+      return 'ended';
+    } else if (start > now) {
+      return 'about-to-start';
+    } else if (start <= now) {
+      return 'in-game';
+    }
+  
+    return '';
   }
 
 }

@@ -1,3 +1,44 @@
-<p>
-  live-games works!
-</p>
+<div class="tab-container live-games-container">
+  <ng-container *ngFor="let game of games">
+    <div class="game-card" [class]="getGameState(game)">
+      <div class="top-row">
+        <div>
+          <img class="game-icon" src="https://placehold.co/30" alt="">
+        </div>
+        <ng-container [ngSwitch]="getGameState(game)">
+          <p *ngSwitchCase="'in-game'" class="game-status">In game</p>
+          <p *ngSwitchCase="'ended'" class="game-status">Ended</p>
+          <p *ngSwitchDefault class="game-status">About to start</p>
+        </ng-container>
+      </div>
+      <div class="middle-row">
+        <div class="left-section">
+          <span>{{game.homeTeam}}</span>
+        </div>
+        <div class="middle-section">
+          <span [class.large-score]="game.homeTeamScore > 9 || game.awayTeamScore > 9">
+            {{game.homeTeamScore}} : {{game.awayTeamScore}}
+          </span>
+        </div>
+        <div class="right-section">
+          <span>{{game.awayTeam}}</span>
+        </div>
+      </div>
+      <div class="bottom-row">
+        <div class="bottom-upper">
+          <div class="left-section">
+            <span>Home</span>
+          </div>
+          <div class="middle-section"></div>
+          <div class="right-section">
+            <span>Away</span>
+          </div>
+        </div>
+        <div class="bottom-lower">
+          <span class="time-container" [class]="getGameState(game)">98'</span>
+        </div>
+        <!-- {{game.awayTeam}} -->
+      </div>
+    </div>
+  </ng-container>
+</div>
