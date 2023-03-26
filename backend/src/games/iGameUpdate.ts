@@ -3,6 +3,7 @@ import { Game } from "./Game";
 export interface IGameUpdate
 {
     timestamp: Date,
-    type: 'penalty' | 'extraTime' | 'score' | 'gameEnd',
+    gameMinute: number,
+    type: 'gameStart' | 'score' | 'extraTime' | 'gameEnd',
     gameState: Game
 }

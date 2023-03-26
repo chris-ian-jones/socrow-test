@@ -68,10 +68,19 @@ export class GamesService {
           break;
         case 'score':
           game.markGoal( Math.random() < 0.5);
-          return <IGameUpdate>{type: 'score', timestamp: new Date(), gameState: game};
+          return <IGameUpdate>{type: 'score', timestamp: new Date(), gameMinute: this.getGameMinute(game.startTime), gameState: game};
           break;
         default:
       }
     }
+  }
+
+  public getGameMinute(gameStartTime: Date) {
+    const currentDate = new Date(),
+      startDateTime = new Date(gameStartTime),
+      diffInMs = startDateTime.getTime() - currentDate.getTime(),
+      diffInMins = Math.floor(diffInMs / (1000 * 60));
+
+    return diffInMins;
   }
 }

@@ -10,5 +10,6 @@ export interface IEvent {
     startTime: string;
   }
   timestamp: string;
+  gameMinute: number;
   type: string;
 }

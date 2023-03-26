@@ -28,6 +28,36 @@ export class AppComponent implements OnInit{
   public activeTabIndex: number = 0;
   public games: Array<IGame> = [];
   public events: Array<IEvent> = []; //messages received from websockets
+  // public events: Array<IEvent> = [
+  //   {
+  //     gameState: {
+  //       awayTeam: 'QCA',
+  //       awayTeamScore: 2,
+  //       endNotified: false,
+  //       endTime: "2023-03-26T15:52:24.813Z",
+  //       homeTeam: "EZE",
+  //       homeTeamScore: 3,
+  //       id: "c1e94722-2df8-4816-82ea-7a97a2ca2bfb",
+  //       startTime: "2023-03-26T14:22:24.813Z"
+  //     },
+  //     timestamp: "2023-03-26T12:45:49.820Z",
+  //     type: "score"
+  //   },
+  //   {
+  //     gameState: {
+  //       awayTeam: 'QCA',
+  //       awayTeamScore: 2,
+  //       endNotified: false,
+  //       endTime: "2023-03-26T15:52:24.813Z",
+  //       homeTeam: "EZE",
+  //       homeTeamScore: 3,
+  //       id: "c1e94722-2df8-4816-82ea-7a97a2ca2bfb",
+  //       startTime: "2023-03-26T14:22:24.813Z"
+  //     },
+  //     timestamp: "2023-03-26T12:45:49.820Z",
+  //     type: "score"
+  //   }
+  // ];
   private liveScoreSubscription!: Subscription;
 
   @ViewChild('viewContainer', { read: ViewContainerRef }) viewContainerRef!: ViewContainerRef;
@@ -56,6 +86,8 @@ export class AppComponent implements OnInit{
         console.log('this.events: ', this.events)
         console.log('*')
       });
+
+    console.log()
   }
 
   ngAfterViewInit() {
@@ -77,6 +109,7 @@ export class AppComponent implements OnInit{
     }
 
     this.activeTabIndex = tabIndex;
+    this.events.length = 0;
     this.viewContainerRef.clear();
     const componentFactory = this.cfr.resolveComponentFactory(this.tabs[tabIndex].component);
     const componentRef = this.viewContainerRef.createComponent(componentFactory);
