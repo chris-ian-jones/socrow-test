@@ -1,7 +1,8 @@
 import { Component, OnInit} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AppService } from "./app.service";
-import { ISocketMessage } from "./interfaces/iSocketMessage";
+import { IGame } from './interfaces/iGame';
+import { IEvent } from './interfaces/iEvent';
 
 @Component({
   selector: 'app-root',
@@ -12,8 +13,8 @@ import { ISocketMessage } from "./interfaces/iSocketMessage";
 export class AppComponent implements OnInit{
   public title: string = 'frontend';
   public helloMessage: string = '';
-  public games: Array<any> = [];
-  public events: Array<any> = []; //messages received from websockets
+  public games: Array<IGame> = [];
+  public events: Array<IEvent> = []; //messages received from websockets
   private liveScoreSubscription!: Subscription;
 
   constructor(
@@ -27,17 +28,20 @@ export class AppComponent implements OnInit{
 
     this.liveScoreSubscription = this.appService
       .subscribeToLiveScoreData('scoreRoom')
-      .subscribe((data: any) => {
+      .subscribe(data => {
         if (Array.isArray(data)) {
-          this.games = data;
-        } else if (typeof data === 'object') {
-          this.events.push(data);
+          this.handleGameData(data as IGame[]);
+        } else if (typeof data === 'object' && data !== null) {
+          this.handleEventData(data as IEvent);
         }
-        console.log('data start')
-          console.log('this.games: ', this.games)
-          console.log('this.events: ', this.events)
-        console.log('data end')
       });
   }
 
+  private handleGameData(data: IGame[]) {
+    this.games = data;
+  }
+  
+  private handleEventData(data: IEvent) {
+    this.events.push(data);
+  }
 }
